@@ -1,4 +1,4 @@
-package se;
+package it.tirocinio.server.arduino;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,7 +20,7 @@ public class ThreadServer extends Thread{
 		threads = new ArrayList<ThreadArduino>();
 	}
 	
-	public void shut(){
+	public void shutDown(){
 		flag = false;
 	}
 

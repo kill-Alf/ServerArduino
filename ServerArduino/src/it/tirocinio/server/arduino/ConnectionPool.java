@@ -1,4 +1,4 @@
-package se;
+package it.tirocinio.server.arduino;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;

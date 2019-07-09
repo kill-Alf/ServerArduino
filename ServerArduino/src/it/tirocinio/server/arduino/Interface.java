@@ -1,4 +1,4 @@
-package se;
+package it.tirocinio.server.arduino;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -47,7 +47,7 @@ public class Interface extends JFrame{
 		buttonStop = new JButton("Stop");
 		
 		buttonStop.addActionListener(c->{
-			t.shut();
+			t.shutDown();
 		});
 		
 		areaTesto = new JTextArea(20,50);

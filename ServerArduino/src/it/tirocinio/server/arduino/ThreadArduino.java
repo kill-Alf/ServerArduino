@@ -1,4 +1,4 @@
-package se;
+package it.tirocinio.server.arduino;
 
 import java.io.IOException;
 import java.net.Socket;
