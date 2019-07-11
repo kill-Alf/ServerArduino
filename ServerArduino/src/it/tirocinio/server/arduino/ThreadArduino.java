@@ -72,6 +72,7 @@ public class ThreadArduino extends Thread{
 
 	private void pulseSensor() {
 		String pulseSensor = input.nextLine();
+		System.out.println(pulseSensor);
 	}
 
 	private void dhtSensor() throws IOException {
@@ -82,7 +83,7 @@ public class ThreadArduino extends Thread{
 		//collection.insertOne(document);
 		System.out.println(dhtSensorUmidity);
 		System.out.println(dhtSensorTemp);
-		System.out.println();
+		
 	}
 
 	private void gyroscopeSensor() {
