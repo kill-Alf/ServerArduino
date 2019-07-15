@@ -72,10 +72,10 @@ public class ThreadArduino extends Thread{
 
 	private void pulseSensor() {
 		String pulseSensor = input.nextLine();
-		MongoCollection<Document> collection = database.getCollection("pulseSensor");
-		Document document = new Document("Battito",Integer.parseInt(pulseSensor));
-		collection.insertOne(document);  
 		if(Integer.parseInt(pulseSensor)>40) {
+			MongoCollection<Document> collection = database.getCollection("pulseSensor");
+			Document document = new Document("Battito",Integer.parseInt(pulseSensor));
+			collection.insertOne(document);  
 			System.out.println("BPM = "+pulseSensor);
 			System.out.println();
 		}
@@ -123,7 +123,6 @@ public class ThreadArduino extends Thread{
 		collection.insertOne(document);
 		System.out.println("Suono = "+voiceSensor);
 		System.out.println();
-	//	Interface.changeText("Suono = " + voiceSensor + "\n"); 
 	}
 
 
