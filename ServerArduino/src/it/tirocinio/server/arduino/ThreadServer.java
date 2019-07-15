@@ -16,6 +16,7 @@ public class ThreadServer extends Thread{
 	
 	public ThreadServer() throws IOException {
 		ss = new ServerSocket(9080);
+		System.out.println("In attesa di connessione");
 		flag = true;
 		threads = new ArrayList<ThreadArduino>();
 	}
@@ -33,7 +34,6 @@ public class ThreadServer extends Thread{
 		while(flag) {
 			try {
 				x = ss.accept();
-				System.out.println("Connection ok");
 				ThreadArduino thread = new ThreadArduino(x);
 				service=Executors.newScheduledThreadPool(core);
 				service.execute(thread);
@@ -45,7 +45,7 @@ public class ThreadServer extends Thread{
 		}
 		
 		System.out.println();
-		System.out.println("Esco dal while");
+		System.out.println("Connessione interrotta");
 		System.out.println();
 		
 		for(int i = 0;i<threads.size();i++) {

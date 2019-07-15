@@ -16,7 +16,7 @@ public class ThreadArduino extends Thread{
 
 	public ThreadArduino(Socket s) throws IOException {
 		socket = s;	
-		//database = ConnectionPool.connect("mydb");
+		database = ConnectionPool.connect("mydb");
 	}
 
 
@@ -31,7 +31,7 @@ public class ThreadArduino extends Thread{
 
 		String stringId = input.nextLine();
 		if(stringId.equals("non ci sono messaggi")) {
-			
+
 		} else {
 			int id = Integer.parseInt(stringId);
 			switch(id) {
@@ -55,7 +55,7 @@ public class ThreadArduino extends Thread{
 					e.printStackTrace();
 				}
 				break;
-			case 4: voiceSensor();
+			case 4: voiceAndGyroscopeSensor();
 			try {
 				socket.close();
 			} catch (IOException e) {
@@ -72,40 +72,58 @@ public class ThreadArduino extends Thread{
 
 	private void pulseSensor() {
 		String pulseSensor = input.nextLine();
-		System.out.println(pulseSensor);
+		MongoCollection<Document> collection = database.getCollection("pulseSensor");
+		Document document = new Document("Battito",Integer.parseInt(pulseSensor));
+		collection.insertOne(document);  
+		if(Integer.parseInt(pulseSensor)>40) {
+			System.out.println("BPM = "+pulseSensor);
+			System.out.println();
+		}
 	}
 
 	private void dhtSensor() throws IOException {
 		String dhtSensorTemp = input.nextLine();
 		String dhtSensorUmidity = input.nextLine();
-		//MongoCollection<Document> collection = database.getCollection("dhtSensor");
-		//Document document = new Document("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
-		//collection.insertOne(document);
-		System.out.println(dhtSensorUmidity);
-		System.out.println(dhtSensorTemp);
-		
+		MongoCollection<Document> collection = database.getCollection("dhtSensor");
+		Document document = new Document("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
+		collection.insertOne(document);
+		System.out.println("umidità = "+dhtSensorUmidity);
+		System.out.println("Temperatura = "+dhtSensorTemp);
+		System.out.println();
 	}
 
 	private void gyroscopeSensor() {
 		String x = input.nextLine();
 		String y = input.nextLine();
 		String z = input.nextLine();
-		//MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
-		//Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
-		//collection.insertOne(document);
-		System.out.println(x);
-		System.out.println(y);
-		System.out.println(z);
+		MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
+		Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+		collection.insertOne(document);
+		System.out.println("X = "+x);
+		System.out.println("Y = "+y);
+		System.out.println("Z = "+z);
 		System.out.println();
 	}
 
-	private void voiceSensor() {
-		String voiceSensor = input.nextLine();
-		//MongoCollection<Document> collection = database.getCollection("voiceSensor");
-		//Document document = new Document("suono",Integer.parseInt(voiceSensor));
-		//collection.insertOne(document);
-		System.out.println(voiceSensor);
+	private void voiceAndGyroscopeSensor() {
+		String x = input.nextLine();
+		String y = input.nextLine();
+		String z = input.nextLine();
+		MongoCollection<Document> collection = database.getCollection("gyroscopeSensor1");
+		Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+		collection.insertOne(document);
+		System.out.println("X1 = "+x);
+		System.out.println("Y1 = "+y);
+		System.out.println("Z1 = "+z);
 		System.out.println();
+		
+		String voiceSensor = input.nextLine();
+		collection = database.getCollection("voiceSensor");
+		document = new Document("suono",Integer.parseInt(voiceSensor));
+		collection.insertOne(document);
+		System.out.println("Suono = "+voiceSensor);
+		System.out.println();
+	//	Interface.changeText("Suono = " + voiceSensor + "\n"); 
 	}
 
 

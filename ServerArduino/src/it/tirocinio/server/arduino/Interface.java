@@ -14,13 +14,17 @@ public class Interface extends JFrame{
 	private JButton buttonStart;
 	private JButton buttonStop;
 	private JPanel panel;
-	private JTextArea areaTesto;
+	private static JTextArea areaTesto;
 	private ThreadServer t;
+	
+	public static void changeText(String text) {
+		areaTesto.append(text);
+	}
 	
 	
 	public Interface() throws IOException {
 		JFrame frame=new JFrame();
-		frame.setSize(500, 500);
+		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		createPanel();
