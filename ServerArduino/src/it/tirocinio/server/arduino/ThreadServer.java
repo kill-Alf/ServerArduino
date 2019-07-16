@@ -13,16 +13,26 @@ public class ThreadServer extends Thread{
 	private ExecutorService service;
 	private boolean flag;
 	private ArrayList<ThreadArduino> threads;
+	private boolean db;
 	
 	public ThreadServer() throws IOException {
 		ss = new ServerSocket(9080);
 		System.out.println("In attesa di connessione");
 		flag = true;
 		threads = new ArrayList<ThreadArduino>();
+		db = false;
 	}
 	
 	public void shutDown(){
 		flag = false;
+	}
+	
+	public void setBooleanTrue() {
+		db = true;
+	}
+	
+	public void setBooleanFalse() {
+		db = false;
 	}
 
 	
@@ -35,6 +45,11 @@ public class ThreadServer extends Thread{
 			try {
 				x = ss.accept();
 				ThreadArduino thread = new ThreadArduino(x);
+				if(db) {
+					thread.setBooleanTrue();
+				} else {
+					thread.setBooleanFalse();
+				}
 				service=Executors.newScheduledThreadPool(core);
 				service.execute(thread);
 				threads.add(thread);

@@ -2,6 +2,7 @@ package it.tirocinio.server.arduino;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Scanner;
 import org.bson.Document;
 import com.mongodb.client.MongoCollection;
@@ -12,13 +13,21 @@ public class ThreadArduino extends Thread{
 	private Socket socket;
 	private Scanner input;
 	private MongoDatabase database;
-
+	private static boolean db;
 
 	public ThreadArduino(Socket s) throws IOException {
 		socket = s;	
 		database = ConnectionPool.connect("mydb");
+		db = false;
 	}
 
+	public void setBooleanTrue() {
+		db = true;
+	}
+	
+	public void setBooleanFalse() {
+		db = false;
+	}
 
 	public void run() {
 
@@ -73,9 +82,12 @@ public class ThreadArduino extends Thread{
 	private void pulseSensor() {
 		String pulseSensor = input.nextLine();
 		if(Integer.parseInt(pulseSensor)>40) {
-			MongoCollection<Document> collection = database.getCollection("pulseSensor");
-			Document document = new Document("Battito",Integer.parseInt(pulseSensor));
-			collection.insertOne(document);  
+			if(db) {
+				MongoCollection<Document> collection = database.getCollection("pulseSensor");
+				Document document = new Document("Battito",Integer.parseInt(pulseSensor));
+				collection.insertOne(document);
+				System.out.println(getOraAttuale());
+			}	  
 			System.out.println("BPM = "+pulseSensor);
 			System.out.println();
 		}
@@ -84,9 +96,12 @@ public class ThreadArduino extends Thread{
 	private void dhtSensor() throws IOException {
 		String dhtSensorTemp = input.nextLine();
 		String dhtSensorUmidity = input.nextLine();
-		MongoCollection<Document> collection = database.getCollection("dhtSensor");
-		Document document = new Document("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
-		collection.insertOne(document);
+		if(db) {
+			MongoCollection<Document> collection = database.getCollection("dhtSensor");
+			Document document = new Document("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
+			collection.insertOne(document);
+			System.out.println(getOraAttuale());
+		}
 		System.out.println("umidità = "+dhtSensorUmidity);
 		System.out.println("Temperatura = "+dhtSensorTemp);
 		System.out.println();
@@ -96,9 +111,16 @@ public class ThreadArduino extends Thread{
 		String x = input.nextLine();
 		String y = input.nextLine();
 		String z = input.nextLine();
-		MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
-		Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
-		collection.insertOne(document);
+		int x1 = Integer.parseInt(x);
+		int y1 = Integer.parseInt(y);
+		int z1 = Integer.parseInt(z);
+		
+		if(db) {
+			MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
+			Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+			collection.insertOne(document);
+			System.out.println(getOraAttuale());
+		}	
 		System.out.println("X = "+x);
 		System.out.println("Y = "+y);
 		System.out.println("Z = "+z);
@@ -109,21 +131,45 @@ public class ThreadArduino extends Thread{
 		String x = input.nextLine();
 		String y = input.nextLine();
 		String z = input.nextLine();
-		MongoCollection<Document> collection = database.getCollection("gyroscopeSensor1");
-		Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
-		collection.insertOne(document);
+		String voiceSensor = input.nextLine();
+		if(db) {
+			MongoCollection<Document> collection = database.getCollection("gyroscopeSensor1");
+			Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+			collection.insertOne(document);
+			collection = database.getCollection("voiceSensor");
+			document = new Document("suono",Integer.parseInt(voiceSensor));
+			collection.insertOne(document);
+			System.out.println(getOraAttuale());
+		}
+		
 		System.out.println("X1 = "+x);
 		System.out.println("Y1 = "+y);
 		System.out.println("Z1 = "+z);
 		System.out.println();
 		
-		String voiceSensor = input.nextLine();
-		collection = database.getCollection("voiceSensor");
-		document = new Document("suono",Integer.parseInt(voiceSensor));
-		collection.insertOne(document);
 		System.out.println("Suono = "+voiceSensor);
 		System.out.println();
 	}
 
+	public String getOraAttuale(){
+		java.util.TimeZone t=java.util.TimeZone.getTimeZone("ECT");
+		java.util.Calendar oggi = java.util.Calendar.getInstance(t);
+	
+		String s = "";
+		String secondi = "" + oggi.get(oggi.SECOND);
+		String minuti = "" + oggi.get(oggi.MINUTE);
+		String ora = "" +oggi.get(oggi.HOUR_OF_DAY);
+	
+		if (secondi.length() == 1)
+			secondi = "0" + secondi;
+		if (minuti.length() == 1)
+			minuti = "0" + minuti;
+		if (ora.length() == 1)
+			ora = "0" + ora;
+		
+		s=ora + ":" + minuti + ":" + secondi;
+	
+		return s;
+	}
 
 }

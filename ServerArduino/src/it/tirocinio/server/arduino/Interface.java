@@ -14,17 +14,13 @@ public class Interface extends JFrame{
 	private JButton buttonStart;
 	private JButton buttonStop;
 	private JPanel panel;
-	private static JTextArea areaTesto;
 	private ThreadServer t;
-	
-	public static void changeText(String text) {
-		areaTesto.append(text);
-	}
-	
+	private JButton buttonSave;
+	private JButton buttonNoSave;
 	
 	public Interface() throws IOException {
 		JFrame frame=new JFrame();
-		frame.setSize(700, 700);
+		frame.setSize(500, 100);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		createPanel();
@@ -52,14 +48,26 @@ public class Interface extends JFrame{
 		
 		buttonStop.addActionListener(c->{
 			t.shutDown();
+			t.setBooleanFalse();
 		});
 		
-		areaTesto = new JTextArea(20,50);
-		areaTesto.setEditable(false);
+		buttonSave = new JButton("Save");
+		
+		buttonSave.addActionListener(s -> {
+			t.setBooleanTrue();
+		});
+		
+		buttonNoSave = new JButton("Stop Save");
+		
+		buttonNoSave.addActionListener(a -> {
+			t.setBooleanFalse();
+		});
+
 		panel = new JPanel();
 		panel.add(buttonStart);
 		panel.add(buttonStop);
-		panel.add(areaTesto);
+		panel.add(buttonSave);
+		panel.add(buttonNoSave);
 	}
 
 }
