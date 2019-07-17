@@ -84,9 +84,8 @@ public class ThreadArduino extends Thread{
 		if(Integer.parseInt(pulseSensor)>40) {
 			if(db) {
 				MongoCollection<Document> collection = database.getCollection("pulseSensor");
-				Document document = new Document("Battito",Integer.parseInt(pulseSensor));
+				Document document = new Document("Ora",getOraAttuale()).append("Battito",Integer.parseInt(pulseSensor));
 				collection.insertOne(document);
-				System.out.println(getOraAttuale());
 			}	  
 			System.out.println("BPM = "+pulseSensor);
 			System.out.println();
@@ -98,7 +97,7 @@ public class ThreadArduino extends Thread{
 		String dhtSensorUmidity = input.nextLine();
 		if(db) {
 			MongoCollection<Document> collection = database.getCollection("dhtSensor");
-			Document document = new Document("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
+			Document document = new Document("Ora",getOraAttuale()).append("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
 			collection.insertOne(document);
 			System.out.println(getOraAttuale());
 		}
@@ -117,7 +116,7 @@ public class ThreadArduino extends Thread{
 		
 		if(db) {
 			MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
-			Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+			Document document = new Document("Ora",getOraAttuale()).append("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
 			collection.insertOne(document);
 			System.out.println(getOraAttuale());
 		}	
@@ -134,10 +133,10 @@ public class ThreadArduino extends Thread{
 		String voiceSensor = input.nextLine();
 		if(db) {
 			MongoCollection<Document> collection = database.getCollection("gyroscopeSensor1");
-			Document document = new Document("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
+			Document document = new Document("Ora",getOraAttuale()).append("x1",Integer.parseInt(x)).append("y1", Integer.parseInt(y)).append("z1", Integer.parseInt(z));
 			collection.insertOne(document);
 			collection = database.getCollection("voiceSensor");
-			document = new Document("suono",Integer.parseInt(voiceSensor));
+			document = new Document("Ora",getOraAttuale()).append("suono",Integer.parseInt(voiceSensor));
 			collection.insertOne(document);
 			System.out.println(getOraAttuale());
 		}
