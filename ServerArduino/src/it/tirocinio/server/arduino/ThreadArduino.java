@@ -55,15 +55,15 @@ public class ThreadArduino extends Thread{
 					e.printStackTrace();
 				}
 				break;
-			case 3: 
-				try {
-					gyroscopeSensor();
-					socket.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
+			case 5: 
+			try {
+				buttonChose();
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 			case 4: voiceAndGyroscopeSensor();
 			try {
 				socket.close();
@@ -95,36 +95,31 @@ public class ThreadArduino extends Thread{
 	private void dhtSensor() throws IOException {
 		String dhtSensorTemp = input.nextLine();
 		String dhtSensorUmidity = input.nextLine();
+		String x = input.nextLine();
+		String y = input.nextLine();
+		String z = input.nextLine();
+		
+		int x1 = Integer.parseInt(x);
+		int y1 = Integer.parseInt(y);
+		int z1 = Integer.parseInt(z);
 		if(db) {
 			MongoCollection<Document> collection = database.getCollection("dhtSensor");
 			Document document = new Document("Ora",getOraAttuale()).append("Temperatura",Integer.parseInt(dhtSensorTemp)).append("Umidità", Integer.parseInt(dhtSensorUmidity));
+			collection.insertOne(document);
+			collection = database.getCollection("gyroscopeSensor");
+			document = new Document("Ora",getOraAttuale()).append("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
 			collection.insertOne(document);
 			System.out.println(getOraAttuale());
 		}
 		System.out.println("umidità = "+dhtSensorUmidity);
 		System.out.println("Temperatura = "+dhtSensorTemp);
 		System.out.println();
-	}
-
-	private void gyroscopeSensor() {
-		String x = input.nextLine();
-		String y = input.nextLine();
-		String z = input.nextLine();
-		int x1 = Integer.parseInt(x);
-		int y1 = Integer.parseInt(y);
-		int z1 = Integer.parseInt(z);
-		
-		if(db) {
-			MongoCollection<Document> collection = database.getCollection("gyroscopeSensor");
-			Document document = new Document("Ora",getOraAttuale()).append("x",Integer.parseInt(x)).append("y", Integer.parseInt(y)).append("z", Integer.parseInt(z));
-			collection.insertOne(document);
-			System.out.println(getOraAttuale());
-		}	
 		System.out.println("X = "+x);
 		System.out.println("Y = "+y);
 		System.out.println("Z = "+z);
 		System.out.println();
 	}
+
 
 	private void voiceAndGyroscopeSensor() {
 		String x = input.nextLine();
@@ -169,6 +164,35 @@ public class ThreadArduino extends Thread{
 		s=ora + ":" + minuti + ":" + secondi;
 	
 		return s;
+	}
+	
+	public void buttonChose() {
+		String button1 = input.nextLine();
+		int button = Integer.parseInt(button1);
+		/*
+		MongoCollection<Document> collection = database.getCollection("oracolo");
+		Document document;
+		switch(button) {
+		case 1:
+			document = new Document("Ora",getOraAttuale()).append("Oracolo","Happy");
+			collection.insertOne(document);
+			break;
+		case 2:
+			document = new Document("Ora",getOraAttuale()).append("Oracolo","Sad");
+			collection.insertOne(document);
+			break;
+		case 3:
+			document = new Document("Ora",getOraAttuale()).append("Oracolo","Angry");
+			collection.insertOne(document);
+			break;
+		case 4:
+			document = new Document("Ora",getOraAttuale()).append("Oracolo","Fear");
+			collection.insertOne(document);
+			break;
+		} */
+		
+		System.out.println(button);
+		
 	}
 
 }
