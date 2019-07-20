@@ -6,15 +6,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadServer extends Thread{
-	
+
 	private static ServerSocket ss;
 	private ExecutorService service;
 	private boolean flag;
 	private ArrayList<ThreadArduino> threads;
 	private boolean db;
-	
+
 	public ThreadServer() throws IOException {
 		ss = new ServerSocket(9080);
 		System.out.println("In attesa di connessione");
@@ -22,25 +23,25 @@ public class ThreadServer extends Thread{
 		threads = new ArrayList<ThreadArduino>();
 		db = false;
 	}
-	
+
 	public void shutDown(){
 		flag = false;
 	}
-	
+
 	public void setBooleanTrue() {
 		db = true;
 	}
-	
+
 	public void setBooleanFalse() {
 		db = false;
 	}
 
-	
+
 	@Override
 	public void run() {
 		Socket x;
 		int core = Runtime.getRuntime().availableProcessors();
-		// TODO Auto-generated method stub
+		service=Executors.newScheduledThreadPool(core);
 		while(flag) {
 			try {
 				x = ss.accept();
@@ -50,33 +51,33 @@ public class ThreadServer extends Thread{
 				} else {
 					thread.setBooleanFalse();
 				}
-			//	service=Executors.newScheduledThreadPool(core);
-			//	service.execute(thread);
-				thread.start();
+				service.execute(thread);
 				threads.add(thread);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		System.out.println();
 		System.out.println("Connessione interrotta");
 		System.out.println();
-		
+
 		for(int i = 0;i<threads.size();i++) {
 			try {
 				threads.get(i).join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		try {
 			ss.close();
+			service.shutdown();
+			service.shutdownNow();
+			service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

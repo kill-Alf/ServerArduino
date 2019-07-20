@@ -8,8 +8,7 @@ import java.util.concurrent.Executors;
 
 
 public class Main {
-
 	public static void main(String[] args) throws IOException {
-	Interface interfaccia=new Interface();
+		Interface interfaccia = new Interface();
 	}
 }
