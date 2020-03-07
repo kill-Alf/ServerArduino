@@ -17,7 +17,7 @@ public class Interface extends JFrame{
 	private ThreadServer t;
 	private JButton buttonSave;
 	private JButton buttonNoSave;
-	
+
 	public Interface() throws IOException {
 		JFrame frame=new JFrame();
 		frame.setSize(500, 100);
@@ -26,7 +26,7 @@ public class Interface extends JFrame{
 		createPanel();
 		frame.add(panel);
 		frame.setVisible(true);
-		
+
 
 	}
 
@@ -41,24 +41,24 @@ public class Interface extends JFrame{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		});
 
 		buttonStop = new JButton("Stop");
-		
+
 		buttonStop.addActionListener(c->{
 			t.shutDown();
 			t.setBooleanFalse();
 		});
-		
+
 		buttonSave = new JButton("Save");
-		
+
 		buttonSave.addActionListener(s -> {
 			t.setBooleanTrue();
 		});
-		
+
 		buttonNoSave = new JButton("Stop Save");
-		
+
 		buttonNoSave.addActionListener(a -> {
 			t.setBooleanFalse();
 		});
