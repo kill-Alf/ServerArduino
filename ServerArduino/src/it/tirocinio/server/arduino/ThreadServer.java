@@ -50,10 +50,8 @@ public class ThreadServer extends Thread{
 				} else {
 					thread.setBooleanFalse();
 				}
-			//	service=Executors.newScheduledThreadPool(core);
-			//	service.execute(thread);
-				thread.start();
-				threads.add(thread);
+				service=Executors.newScheduledThreadPool(core);
+				service.execute(thread);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

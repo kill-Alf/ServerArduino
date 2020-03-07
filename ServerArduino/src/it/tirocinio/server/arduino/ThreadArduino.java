@@ -111,7 +111,7 @@ public class ThreadArduino extends Thread{
 			collection.insertOne(document);
 			System.out.println(getOraAttuale());
 		}
-		System.out.println("umidit√† = "+dhtSensorUmidity);
+		System.out.println("umidit‡† = "+dhtSensorUmidity);
 		System.out.println("Temperatura = "+dhtSensorTemp);
 		System.out.println();
 		System.out.println("X = "+x);
